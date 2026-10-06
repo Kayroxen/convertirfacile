@@ -1,0 +1,19 @@
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/{{LANG}}/" class="logo">{{SITE_NOM}}</a>
+    <nav class="menu">
+      {{MENU_MAIN}}
+      <div class="dropdown">
+        <button class="dropdown-toggle" type="button">{{LABEL_PLUS}} ▾</button>
+        <div class="dropdown-menu">
+          {{MENU_PLUS}}
+        </div>
+      </div>
+    </nav>
+    <div class="search">
+      <input type="search" id="recherche" placeholder="{{RECHERCHE_PLACEHOLDER}}" autocomplete="off">
+      <div id="resultats" class="resultats"></div>
+    </div>
+    <a href="{{LANG_SWITCH_URL}}" class="lang-switch" title="{{LANG_SWITCH_TITRE}}">{{LANG_SWITCH_LABEL}}</a>
+  </div>
+</header>
