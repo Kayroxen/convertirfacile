@@ -2182,6 +2182,210 @@ ${construireFooter(lang)}
 }
 
 // ============================================================
+// PAGE OUTIL : CONVERTISSEUR UNIVERSEL (noindex)
+// ============================================================
+
+function pageConvertisseur(lang) {
+  const trad = TRAD[lang];
+  const titre = lang === 'fr' ? 'Convertisseur universel' : 'Universal converter';
+  const description = lang === 'fr'
+    ? 'Convertissez toutes les unités en un seul endroit : longueur, masse, volume, température, vitesse et plus.'
+    : 'Convert all units in one place: length, weight, volume, temperature, speed and more.';
+  const intro = lang === 'fr'
+    ? 'Un seul outil pour toutes vos conversions. Choisissez une catégorie, entrez votre valeur, obtenez le résultat instantanément.'
+    : 'One tool for all your conversions. Pick a category, enter your value, get the result instantly.';
+
+  // Prépare les données pour le JS côté client
+  const catData = {};
+  for (const [catKey, cat] of Object.entries(categories)) {
+    const unites = cat.unites.map(u => {
+      const obj = { slug: u.slug, nom: nomUnite(u.slug, lang) };
+      if (cat.special) {
+        obj.toRef = u.toRef.toString();
+        obj.fromRef = u.fromRef.toString();
+      } else {
+        obj.f = u.f;
+      }
+      return obj;
+    });
+    catData[catKey] = {
+      nom: trad.categories[catKey].nom,
+      icone: trad.categories[catKey].icone,
+      special: cat.special || false,
+      unites: unites,
+    };
+  }
+
+  const labelCat   = lang === 'fr' ? 'Catégorie' : 'Category';
+  const labelDe    = lang === 'fr' ? 'De' : 'From';
+  const labelVers  = lang === 'fr' ? 'Vers' : 'To';
+  const labelVal   = lang === 'fr' ? 'Valeur' : 'Value';
+  const labelRes   = lang === 'fr' ? 'Résultat' : 'Result';
+  const labelCopy  = lang === 'fr' ? 'Copier' : 'Copy';
+  const labelCopied= lang === 'fr' ? 'Copié !' : 'Copied!';
+  const labelSwap  = lang === 'fr' ? 'Inverser' : 'Swap';
+
+  return `<!DOCTYPE html>
+<html lang="${lang}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2563eb">
+<title>${titre} - ${SITE_NOM}</title>
+<meta name="description" content="${esc(description)}">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+${construireHeader(lang)}
+
+<main class="convertisseur-page">
+  <h1>${titre}</h1>
+  <p class="intro">${intro}</p>
+
+  <div class="conv-card">
+
+    <div class="conv-field">
+      <label>${labelCat}</label>
+      <select id="conv-cat"></select>
+    </div>
+
+    <div class="conv-grid">
+      <div class="conv-side">
+        <label>${labelDe}</label>
+        <input type="number" id="conv-val" value="1" step="any">
+        <select id="conv-de"></select>
+      </div>
+
+      <button type="button" class="conv-swap" id="conv-swap" title="${labelSwap}">⇄</button>
+
+      <div class="conv-side">
+        <label>${labelVers}</label>
+        <input type="text" id="conv-res" readonly>
+        <select id="conv-vers"></select>
+      </div>
+    </div>
+
+    <div class="conv-result">
+      <span id="conv-texte">—</span>
+      <button type="button" id="conv-copy" class="conv-btn">${labelCopy}</button>
+    </div>
+
+  </div>
+</main>
+
+${construireFooter(lang)}
+
+<script>
+(function(){
+  var CATS = ${JSON.stringify(catData)};
+  var LABELS = { copy: ${JSON.stringify(labelCopy)}, copied: ${JSON.stringify(labelCopied)} };
+
+  var selCat  = document.getElementById('conv-cat');
+  var selDe   = document.getElementById('conv-de');
+  var selVers = document.getElementById('conv-vers');
+  var inputVal= document.getElementById('conv-val');
+  var inputRes= document.getElementById('conv-res');
+  var texteRes= document.getElementById('conv-texte');
+  var btnSwap = document.getElementById('conv-swap');
+  var btnCopy = document.getElementById('conv-copy');
+
+  function remplirSelect(sel, unites, selectedSlug) {
+    sel.innerHTML = '';
+    unites.forEach(function(u){
+      var opt = document.createElement('option');
+      opt.value = u.slug;
+      opt.textContent = u.nom;
+      if (u.slug === selectedSlug) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  function chargerCategorie(catKey) {
+    var cat = CATS[catKey];
+    remplirSelect(selDe, cat.unites, cat.unites[0].slug);
+    remplirSelect(selVers, cat.unites, cat.unites[1] ? cat.unites[1].slug : cat.unites[0].slug);
+    convertir();
+  }
+
+  function calculer(catKey, deSlug, versSlug, valeur) {
+    var cat = CATS[catKey];
+    var de = cat.unites.find(function(u){ return u.slug === deSlug; });
+    var vers = cat.unites.find(function(u){ return u.slug === versSlug; });
+    if (!de || !vers) return 0;
+
+    if (cat.special) {
+      var toRefFn = eval('(' + de.toRef + ')');
+      var fromRefFn = eval('(' + vers.fromRef + ')');
+      return fromRefFn(toRefFn(valeur));
+    }
+    return valeur * de.f / vers.f;
+  }
+
+  function arrondir(n) {
+    if (!isFinite(n)) return 0;
+    if (Math.abs(n) < 1e-6 || Math.abs(n) > 1e15) return n.toExponential(4);
+    return Math.round(n * 10000) / 10000;
+  }
+
+  function convertir() {
+    var catKey = selCat.value;
+    var deSlug = selDe.value;
+    var versSlug = selVers.value;
+    var valeur = parseFloat(inputVal.value) || 0;
+
+    var res = calculer(catKey, deSlug, versSlug, valeur);
+    var resArrondi = arrondir(res);
+    inputRes.value = resArrondi;
+
+    var deNom = selDe.options[selDe.selectedIndex].textContent;
+    var versNom = selVers.options[selVers.selectedIndex].textContent;
+    texteRes.textContent = valeur + ' ' + deNom + ' = ' + resArrondi + ' ' + versNom;
+  }
+
+  // Initialisation
+  Object.keys(CATS).forEach(function(k){
+    var opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = CATS[k].icone + ' ' + CATS[k].nom;
+    selCat.appendChild(opt);
+  });
+
+  selCat.addEventListener('change', function(){ chargerCategorie(selCat.value); });
+  selDe.addEventListener('change', convertir);
+  selVers.addEventListener('change', convertir);
+  inputVal.addEventListener('input', convertir);
+
+  btnSwap.addEventListener('click', function(){
+    var oldDe = selDe.value;
+    selDe.value = selVers.value;
+    selVers.value = oldDe;
+    convertir();
+  });
+
+  btnCopy.addEventListener('click', function(){
+    var txt = texteRes.textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(txt).then(function(){
+        btnCopy.textContent = LABELS.copied;
+        setTimeout(function(){ btnCopy.textContent = LABELS.copy; }, 1500);
+      });
+    }
+  });
+
+  chargerCategorie(Object.keys(CATS)[0]);
+})();
+</script>
+<script src="/app.js" defer></script>
+<script src="/cookies.js" defer></script>
+<script src="/ads.js" defer></script>
+</body>
+</html>`;
+}
+
+// ============================================================
 // 12. CONTENU PAGES LÉGALES
 // ============================================================
 
@@ -2522,6 +2726,7 @@ for (const lang of LANGUES) {
     pageSimple(lang, trad.contactTitre, contenuContact(lang), trad.urlContact));
 
   fs.writeFileSync(path.join(langDir, '404.html'), page404(lang));
+  fs.writeFileSync(path.join(langDir, 'convertisseur.html'), pageConvertisseur(lang));
   fs.writeFileSync(path.join(out, `search-index-${lang}.json`), searchIndex(lang));
 }
 

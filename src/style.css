@@ -699,3 +699,169 @@ body:has(.cookie-banner) .back-to-top {
     bottom: 9rem;
   }
 }
+
+/* ============================================================
+   PAGE CONVERTISSEUR UNIVERSEL
+   ============================================================ */
+.convertisseur-page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 1rem 4rem;
+}
+
+.convertisseur-page h1 {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.convertisseur-page .intro {
+  text-align: center;
+  color: var(--texte-doux);
+  margin-bottom: 2.5rem;
+}
+
+.conv-card {
+  background: #fff;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.conv-field {
+  margin-bottom: 1.5rem;
+}
+.conv-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texte-doux);
+  margin-bottom: 0.5rem;
+}
+.conv-field select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  background: #fff;
+  font-family: inherit;
+  cursor: pointer;
+}
+.conv-field select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.conv-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+}
+
+.conv-side label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--texte-doux);
+  margin-bottom: 0.5rem;
+}
+
+.conv-side input,
+.conv-side select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--bordure);
+  border-radius: var(--rayon);
+  background: #fff;
+  font-family: inherit;
+  margin-bottom: 0.5rem;
+}
+
+.conv-side input:focus,
+.conv-side select:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.conv-side input[readonly] {
+  background: var(--fond-doux);
+  font-weight: 600;
+  color: var(--accent);
+  cursor: default;
+}
+
+.conv-swap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--bordure);
+  background: #fff;
+  color: var(--accent);
+  font-size: 1.25rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: transform 0.2s, border-color 0.15s;
+}
+.conv-swap:hover {
+  border-color: var(--accent);
+  transform: rotate(180deg);
+}
+
+.conv-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: var(--fond-doux);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--rayon);
+  padding: 1rem 1.25rem;
+  flex-wrap: wrap;
+}
+
+#conv-texte {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--texte);
+  word-break: break-word;
+}
+
+.conv-btn {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  background: #fff;
+  color: var(--accent);
+  border-radius: var(--rayon);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.conv-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .conv-grid {
+    grid-template-columns: 1fr;
+  }
+  .conv-swap {
+    justify-self: center;
+    margin: 0.5rem 0;
+  }
+  .conv-card {
+    padding: 1.25rem;
+  }
+}

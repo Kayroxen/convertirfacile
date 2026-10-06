@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#2563eb">
+<title>Convertisseur universel - ConvertirFacile</title>
+<meta name="description" content="Convertissez toutes les unités en un seul endroit : longueur, masse, volume, température, vitesse et plus.">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/fr/" class="logo">ConvertirFacile</a>
+    <nav class="menu">
+      <a href="/fr/longueur/">📏 Longueur</a>
+      <a href="/fr/masse/">⚖️ Masse</a>
+      <a href="/fr/volume/">🧪 Volume</a>
+      <a href="/fr/temperature/">🌡️ Température</a>
+      <a href="/fr/surface/">📐 Surface</a>
+      <a href="/fr/vitesse/">🚀 Vitesse</a>
+      <div class="dropdown">
+        <button class="dropdown-toggle" type="button">Plus ▾</button>
+        <div class="dropdown-menu">
+          <a href="/fr/donnees/">📊 Données</a>
+          <a href="/fr/temps/">⏱️ Temps</a>
+          <a href="/fr/pression/">🌬️ Pression</a>
+          <a href="/fr/energie/">🔋 Énergie</a>
+          <a href="/fr/cuisine/">🍳 Cuisine</a>
+          <a href="/fr/debit/">🔄 Débit</a>
+          <a href="/fr/puissance/">💡 Puissance</a>
+          <a href="/fr/frequence/">📻 Fréquence</a>
+          <a href="/fr/angle/">🎚️ Angle</a>
+          <a href="/fr/force/">🧲 Force</a>
+        </div>
+      </div>
+    </nav>
+    <div class="search">
+      <input type="search" id="recherche" placeholder="Rechercher…" autocomplete="off">
+      <div id="resultats" class="resultats"></div>
+    </div>
+    <a href="/en/" class="lang-switch" title="English">EN</a>
+  </div>
+</header>
+
+<main class="convertisseur-page">
+  <h1>Convertisseur universel</h1>
+  <p class="intro">Un seul outil pour toutes vos conversions. Choisissez une catégorie, entrez votre valeur, obtenez le résultat instantanément.</p>
+
+  <div class="conv-card">
+
+    <div class="conv-field">
+      <label>Catégorie</label>
+      <select id="conv-cat"></select>
+    </div>
+
+    <div class="conv-grid">
+      <div class="conv-side">
+        <label>De</label>
+        <input type="number" id="conv-val" value="1" step="any">
+        <select id="conv-de"></select>
+      </div>
+
+      <button type="button" class="conv-swap" id="conv-swap" title="Inverser">⇄</button>
+
+      <div class="conv-side">
+        <label>Vers</label>
+        <input type="text" id="conv-res" readonly>
+        <select id="conv-vers"></select>
+      </div>
+    </div>
+
+    <div class="conv-result">
+      <span id="conv-texte">—</span>
+      <button type="button" id="conv-copy" class="conv-btn">Copier</button>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-col-brand">
+      <strong>ConvertirFacile</strong>
+      <p>Convertisseur d'unités simple et rapide.</p>
+    </div>
+    <div class="footer-col footer-col-cats">
+      <strong>Catégories</strong>
+      <div class="footer-cats-grid">
+        <a href="/fr/longueur/">Longueur</a>
+        <a href="/fr/masse/">Masse</a>
+        <a href="/fr/volume/">Volume</a>
+        <a href="/fr/surface/">Surface</a>
+        <a href="/fr/donnees/">Données</a>
+        <a href="/fr/temps/">Temps</a>
+        <a href="/fr/pression/">Pression</a>
+        <a href="/fr/energie/">Énergie</a>
+        <a href="/fr/cuisine/">Cuisine</a>
+        <a href="/fr/vitesse/">Vitesse</a>
+        <a href="/fr/debit/">Débit</a>
+        <a href="/fr/puissance/">Puissance</a>
+        <a href="/fr/frequence/">Fréquence</a>
+        <a href="/fr/angle/">Angle</a>
+        <a href="/fr/force/">Force</a>
+        <a href="/fr/temperature/">Température</a>
+      </div>
+    </div>
+    <div class="footer-col footer-col-links">
+      <strong>À propos</strong>
+      <a href="/fr/a-propos.html">Qui sommes-nous</a>
+      <a href="/fr/mentions-legales.html">Mentions légales</a>
+      <a href="/fr/politique-confidentialite.html">Confidentialité</a>
+      <a href="/fr/contact.html">Contact</a>
+    </div>
+  </div>
+  <p class="copyright">© 2026 ConvertirFacile</p>
+</footer>
+
+<script>
+(function(){
+  var CATS = {"longueur":{"nom":"Longueur","icone":"📏","special":false,"unites":[{"slug":"mm","nom":"mm","f":0.001},{"slug":"cm","nom":"cm","f":0.01},{"slug":"dm","nom":"dm","f":0.1},{"slug":"m","nom":"m","f":1},{"slug":"dam","nom":"dam","f":10},{"slug":"hm","nom":"hm","f":100},{"slug":"km","nom":"km","f":1000},{"slug":"pouce","nom":"pouces","f":0.0254},{"slug":"pied","nom":"pieds","f":0.3048},{"slug":"yard","nom":"yards","f":0.9144},{"slug":"mile","nom":"miles","f":1609.344},{"slug":"mile-nautique","nom":"miles nautiques","f":1852},{"slug":"furlong","nom":"furlongs","f":201.168},{"slug":"brasse","nom":"brasses","f":1.8288},{"slug":"chaine","nom":"chaînes","f":20.1168},{"slug":"perche","nom":"perches","f":5.0292},{"slug":"angstrom","nom":"ångströms","f":1e-10},{"slug":"micron","nom":"microns","f":0.000001},{"slug":"nanometre","nom":"nanomètres","f":1e-9},{"slug":"annee-lumiere","nom":"années-lumière","f":9461000000000000}]},"masse":{"nom":"Masse","icone":"⚖️","special":false,"unites":[{"slug":"mg","nom":"mg","f":0.001},{"slug":"cg","nom":"cg","f":0.01},{"slug":"dg","nom":"dg","f":0.1},{"slug":"g","nom":"g","f":1},{"slug":"dag","nom":"dag","f":10},{"slug":"hg","nom":"hg","f":100},{"slug":"kg","nom":"kg","f":1000},{"slug":"tonne","nom":"tonnes","f":1000000},{"slug":"once","nom":"onces","f":28.3495},{"slug":"livre","nom":"livres","f":453.592},{"slug":"stone","nom":"stones","f":6350.29},{"slug":"carat","nom":"carats","f":0.2},{"slug":"grain","nom":"grains","f":0.0647989},{"slug":"tonne-courte","nom":"tonnes courtes","f":907185},{"slug":"tonne-longue","nom":"tonnes longues","f":1016047}]},"volume":{"nom":"Volume","icone":"🧪","special":false,"unites":[{"slug":"ml","nom":"ml","f":0.001},{"slug":"cl","nom":"cl","f":0.01},{"slug":"dl","nom":"dl","f":0.1},{"slug":"l","nom":"litres","f":1},{"slug":"dal","nom":"dal","f":10},{"slug":"hl","nom":"hl","f":100},{"slug":"cm3","nom":"cm³","f":0.001},{"slug":"m3","nom":"m³","f":1000},{"slug":"cuillere-cafe","nom":"cuillères à café","f":0.005},{"slug":"cuillere-soupe","nom":"cuillères à soupe","f":0.015},{"slug":"tasse","nom":"tasses","f":0.24},{"slug":"verre","nom":"verres","f":0.2},{"slug":"pinte-us","nom":"pintes US","f":0.473176},{"slug":"pinte-uk","nom":"pintes UK","f":0.568261},{"slug":"gallon-us","nom":"gallons US","f":3.78541},{"slug":"gallon-uk","nom":"gallons UK","f":4.54609},{"slug":"once-liquide","nom":"onces liquides","f":0.0295735},{"slug":"baril","nom":"barils","f":158.987},{"slug":"pied-cube","nom":"pieds cubes","f":28.3168},{"slug":"pouce-cube","nom":"pouces cubes","f":0.0163871}]},"surface":{"nom":"Surface","icone":"📐","special":false,"unites":[{"slug":"mm2","nom":"mm²","f":0.000001},{"slug":"cm2","nom":"cm²","f":0.0001},{"slug":"dm2","nom":"dm²","f":0.01},{"slug":"m2","nom":"m²","f":1},{"slug":"are","nom":"ares","f":100},{"slug":"hectare","nom":"hectares","f":10000},{"slug":"km2","nom":"km²","f":1000000},{"slug":"pouce2","nom":"pouces²","f":0.00064516},{"slug":"pied2","nom":"pieds²","f":0.092903},{"slug":"yard2","nom":"yards²","f":0.836127},{"slug":"acre","nom":"acres","f":4046.86},{"slug":"mile2","nom":"miles²","f":2589988},{"slug":"centiare","nom":"centiares","f":1},{"slug":"perche2","nom":"perches²","f":25.2929},{"slug":"arpent","nom":"arpents","f":3418.89}]},"donnees":{"nom":"Données","icone":"📊","special":false,"unites":[{"slug":"bit","nom":"bits","f":0.125},{"slug":"octet","nom":"octets","f":1},{"slug":"ko","nom":"ko","f":1000},{"slug":"mo","nom":"Mo","f":1000000},{"slug":"go","nom":"Go","f":1000000000},{"slug":"to","nom":"To","f":1000000000000},{"slug":"po","nom":"Po","f":1000000000000000},{"slug":"kibioctet","nom":"kibioctets","f":1024},{"slug":"mebioctet","nom":"mébioctets","f":1048576},{"slug":"gibioctet","nom":"gibioctets","f":1073741824},{"slug":"tebioctet","nom":"tébioctets","f":1099500000000},{"slug":"pebioctet","nom":"pébioctets","f":1125900000000000},{"slug":"kilobit","nom":"kilobits","f":125},{"slug":"megabit","nom":"mégabits","f":125000}]},"temps":{"nom":"Temps","icone":"⏱️","special":false,"unites":[{"slug":"milliseconde","nom":"millisecondes","f":0.001},{"slug":"seconde","nom":"secondes","f":1},{"slug":"minute","nom":"minutes","f":60},{"slug":"heure","nom":"heures","f":3600},{"slug":"jour","nom":"jours","f":86400},{"slug":"semaine","nom":"semaines","f":604800},{"slug":"mois","nom":"mois","f":2629800},{"slug":"trimestre","nom":"trimestres","f":7889400},{"slug":"semestre","nom":"semestres","f":15778800},{"slug":"annee","nom":"années","f":31557600},{"slug":"decennie","nom":"décennies","f":315576000},{"slug":"siecle","nom":"siècles","f":3155760000},{"slug":"millenaire","nom":"millénaires","f":31557600000},{"slug":"lustre","nom":"lustres","f":157788000},{"slug":"quinquennat","nom":"quinquennats","f":157788000}]},"pression":{"nom":"Pression","icone":"🌬️","special":false,"unites":[{"slug":"pascal","nom":"pascals","f":1},{"slug":"hpa","nom":"hPa","f":100},{"slug":"kpa","nom":"kPa","f":1000},{"slug":"mpa","nom":"MPa","f":1000000},{"slug":"bar","nom":"bars","f":100000},{"slug":"mbar","nom":"mbar","f":100},{"slug":"atmosphere","nom":"atmosphères","f":101325},{"slug":"psi","nom":"psi","f":6894.76},{"slug":"torr","nom":"torrs","f":133.322},{"slug":"mmhg","nom":"mmHg","f":133.322},{"slug":"cmh2o","nom":"cmH₂O","f":98.0665},{"slug":"n-m2","nom":"N/m²","f":1}]},"energie":{"nom":"Énergie","icone":"🔋","special":false,"unites":[{"slug":"joule","nom":"joules","f":1},{"slug":"kilojoule","nom":"kilojoules","f":1000},{"slug":"calorie","nom":"calories","f":4.184},{"slug":"kilocalorie","nom":"kilocalories","f":4184},{"slug":"wh","nom":"Wh","f":3600},{"slug":"kwh","nom":"kWh","f":3600000},{"slug":"btu","nom":"BTU","f":1055.06},{"slug":"electronvolt","nom":"électronvolts","f":1.60218e-19},{"slug":"erg","nom":"ergs","f":1e-7},{"slug":"tonne-tnt","nom":"tonnes TNT","f":4184000000}]},"cuisine":{"nom":"Cuisine","icone":"🍳","special":false,"unites":[{"slug":"cuillere-cafe","nom":"cuillères à café","f":5},{"slug":"cuillere-soupe","nom":"cuillères à soupe","f":15},{"slug":"tasse","nom":"tasses","f":240},{"slug":"verre","nom":"verres","f":200},{"slug":"ml","nom":"ml","f":1},{"slug":"cl","nom":"cl","f":10},{"slug":"dl","nom":"dl","f":100},{"slug":"l","nom":"litres","f":1000},{"slug":"pinte-us","nom":"pintes US","f":473},{"slug":"once-liquide","nom":"onces liquides","f":29.57}]},"vitesse":{"nom":"Vitesse","icone":"🚀","special":false,"unites":[{"slug":"ms","nom":"m/s","f":1},{"slug":"kmh","nom":"km/h","f":0.277778},{"slug":"mph","nom":"mph","f":0.44704},{"slug":"noeud","nom":"nœuds","f":0.514444},{"slug":"pied-s","nom":"pieds/s","f":0.3048},{"slug":"mach","nom":"Mach","f":340.29},{"slug":"cm-s","nom":"cm/s","f":0.01},{"slug":"km-s","nom":"km/s","f":1000}]},"debit":{"nom":"Débit","icone":"🔄","special":false,"unites":[{"slug":"bps","nom":"bit/s","f":1},{"slug":"kbps","nom":"kbit/s","f":1000},{"slug":"mbps","nom":"Mbit/s","f":1000000},{"slug":"gbps","nom":"Gbit/s","f":1000000000},{"slug":"tbps","nom":"Tbit/s","f":1000000000000},{"slug":"octet-s","nom":"octets/s","f":8},{"slug":"ko-s","nom":"ko/s","f":8000},{"slug":"mo-s","nom":"Mo/s","f":8000000},{"slug":"go-s","nom":"Go/s","f":8000000000},{"slug":"to-s","nom":"To/s","f":8000000000000}]},"puissance":{"nom":"Puissance","icone":"💡","special":false,"unites":[{"slug":"watt","nom":"watts","f":1},{"slug":"kilowatt","nom":"kilowatts","f":1000},{"slug":"megawatt","nom":"mégawatts","f":1000000},{"slug":"gigawatt","nom":"gigawatts","f":1000000000},{"slug":"cheval-vapeur","nom":"chevaux-vapeur","f":735.499},{"slug":"btu-h","nom":"BTU/h","f":0.293071},{"slug":"calorie-s","nom":"calories/s","f":4.184},{"slug":"joule-s","nom":"joules/s","f":1}]},"frequence":{"nom":"Fréquence","icone":"📻","special":false,"unites":[{"slug":"hertz","nom":"hertz","f":1},{"slug":"khz","nom":"kHz","f":1000},{"slug":"mhz","nom":"MHz","f":1000000},{"slug":"ghz","nom":"GHz","f":1000000000},{"slug":"thz","nom":"THz","f":1000000000000},{"slug":"tr-min","nom":"tr/min","f":0.016666666666666666},{"slug":"tr-s","nom":"tr/s","f":1}]},"angle":{"nom":"Angle","icone":"🎚️","special":false,"unites":[{"slug":"degre","nom":"degrés","f":0.017453292519943295},{"slug":"radian","nom":"radians","f":1},{"slug":"grade","nom":"grades","f":0.015707963267948967},{"slug":"tour","nom":"tours","f":6.283185307179586},{"slug":"minute-arc","nom":"minutes d'arc","f":0.0002908882086657216},{"slug":"seconde-arc","nom":"secondes d'arc","f":0.00000484813681109536}]},"force":{"nom":"Force","icone":"🧲","special":false,"unites":[{"slug":"newton","nom":"newtons","f":1},{"slug":"kilonewton","nom":"kilonewtons","f":1000},{"slug":"dyne","nom":"dynes","f":0.00001},{"slug":"livre-force","nom":"livres-force","f":4.44822},{"slug":"kilogramme-force","nom":"kilogrammes-force","f":9.80665},{"slug":"once-force","nom":"onces-force","f":0.278014}]},"temperature":{"nom":"Température","icone":"🌡️","special":true,"unites":[{"slug":"celsius","nom":"Celsius","toRef":"v => v","fromRef":"v => v"},{"slug":"fahrenheit","nom":"Fahrenheit","toRef":"v => (v - 32) * 5/9","fromRef":"v => v * 9/5 + 32"},{"slug":"kelvin","nom":"Kelvin","toRef":"v => v - 273.15","fromRef":"v => v + 273.15"},{"slug":"rankine","nom":"Rankine","toRef":"v => v * 5/9 - 273.15","fromRef":"v => (v + 273.15) * 9/5"},{"slug":"reaumur","nom":"Réaumur","toRef":"v => v * 1.25","fromRef":"v => v * 0.8"}]}};
+  var LABELS = { copy: "Copier", copied: "Copié !" };
+
+  var selCat  = document.getElementById('conv-cat');
+  var selDe   = document.getElementById('conv-de');
+  var selVers = document.getElementById('conv-vers');
+  var inputVal= document.getElementById('conv-val');
+  var inputRes= document.getElementById('conv-res');
+  var texteRes= document.getElementById('conv-texte');
+  var btnSwap = document.getElementById('conv-swap');
+  var btnCopy = document.getElementById('conv-copy');
+
+  function remplirSelect(sel, unites, selectedSlug) {
+    sel.innerHTML = '';
+    unites.forEach(function(u){
+      var opt = document.createElement('option');
+      opt.value = u.slug;
+      opt.textContent = u.nom;
+      if (u.slug === selectedSlug) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  function chargerCategorie(catKey) {
+    var cat = CATS[catKey];
+    remplirSelect(selDe, cat.unites, cat.unites[0].slug);
+    remplirSelect(selVers, cat.unites, cat.unites[1] ? cat.unites[1].slug : cat.unites[0].slug);
+    convertir();
+  }
+
+  function calculer(catKey, deSlug, versSlug, valeur) {
+    var cat = CATS[catKey];
+    var de = cat.unites.find(function(u){ return u.slug === deSlug; });
+    var vers = cat.unites.find(function(u){ return u.slug === versSlug; });
+    if (!de || !vers) return 0;
+
+    if (cat.special) {
+      var toRefFn = eval('(' + de.toRef + ')');
+      var fromRefFn = eval('(' + vers.fromRef + ')');
+      return fromRefFn(toRefFn(valeur));
+    }
+    return valeur * de.f / vers.f;
+  }
+
+  function arrondir(n) {
+    if (!isFinite(n)) return 0;
+    if (Math.abs(n) < 1e-6 || Math.abs(n) > 1e15) return n.toExponential(4);
+    return Math.round(n * 10000) / 10000;
+  }
+
+  function convertir() {
+    var catKey = selCat.value;
+    var deSlug = selDe.value;
+    var versSlug = selVers.value;
+    var valeur = parseFloat(inputVal.value) || 0;
+
+    var res = calculer(catKey, deSlug, versSlug, valeur);
+    var resArrondi = arrondir(res);
+    inputRes.value = resArrondi;
+
+    var deNom = selDe.options[selDe.selectedIndex].textContent;
+    var versNom = selVers.options[selVers.selectedIndex].textContent;
+    texteRes.textContent = valeur + ' ' + deNom + ' = ' + resArrondi + ' ' + versNom;
+  }
+
+  // Initialisation
+  Object.keys(CATS).forEach(function(k){
+    var opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = CATS[k].icone + ' ' + CATS[k].nom;
+    selCat.appendChild(opt);
+  });
+
+  selCat.addEventListener('change', function(){ chargerCategorie(selCat.value); });
+  selDe.addEventListener('change', convertir);
+  selVers.addEventListener('change', convertir);
+  inputVal.addEventListener('input', convertir);
+
+  btnSwap.addEventListener('click', function(){
+    var oldDe = selDe.value;
+    selDe.value = selVers.value;
+    selVers.value = oldDe;
+    convertir();
+  });
+
+  btnCopy.addEventListener('click', function(){
+    var txt = texteRes.textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(txt).then(function(){
+        btnCopy.textContent = LABELS.copied;
+        setTimeout(function(){ btnCopy.textContent = LABELS.copy; }, 1500);
+      });
+    }
+  });
+
+  chargerCategorie(Object.keys(CATS)[0]);
+})();
+</script>
+<script src="/app.js" defer></script>
+<script src="/cookies.js" defer></script>
+<script src="/ads.js" defer></script>
+</body>
+</html>
