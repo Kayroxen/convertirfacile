@@ -2440,7 +2440,13 @@ fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 
 fs.writeFileSync(path.join(out, 'index.html'), pageRacine());
-fs.writeFileSync(path.join(out, 'favicon.svg'), FAVICON_SVG);
+
+
+// Fichier de vérification Google Search Console
+// (à régénérer si tu changes de compte Google)
+const GOOGLE_VERIF_FILENAME = 'google410344c2c4e63311.html';
+const GOOGLE_VERIF_CONTENT = 'google-site-verification: ' + GOOGLE_VERIF_FILENAME;
+fs.writeFileSync(path.join(out, GOOGLE_VERIF_FILENAME), GOOGLE_VERIF_CONTENT);
 
 const t0 = Date.now();
 
