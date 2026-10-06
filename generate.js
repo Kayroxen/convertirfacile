@@ -2434,7 +2434,7 @@ function pageRacine() {
 // 15. ÉCRITURE
 // ============================================================
 
-const out = 'public';
+const out = 'docs';
 console.log('🧹 Nettoyage de public/…');
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
