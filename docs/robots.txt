@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://kayroxen.github.io/sitemap.xml
