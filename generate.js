@@ -2435,12 +2435,12 @@ function pageRacine() {
 // ============================================================
 
 const out = 'docs';
-console.log('🧹 Nettoyage de public/…');
+console.log('🧹 Nettoyage de docs/…');
 fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 
 fs.writeFileSync(path.join(out, 'index.html'), pageRacine());
-
+fs.writeFileSync(path.join(out, 'favicon.svg'), FAVICON_SVG);   // ← REMETS CETTE LIGNE
 
 // Fichier de vérification Google Search Console
 // (à régénérer si tu changes de compte Google)
@@ -2523,4 +2523,4 @@ console.log('   sitemap.xml + robots.txt');
 console.log('   search-index-fr.json + search-index-en.json');
 console.log('   favicon.svg + style.css + app.js + ads.js');
 console.log('');
-console.log(`📦 TOTAL : ${totalFr + totalEn + 32 + 8 + 2 + 2 + 2 + 3 + 1 + 2 + 1} fichiers dans public/`);
+console.log(`📦 TOTAL : ${totalFr + totalEn + 32 + 8 + 2 + 2 + 2 + 3 + 1 + 2 + 1} fichiers dans docs/`);
