@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SITE_URL = 'https://tonsite.fr';
+const SITE_URL = 'https://kayroxen.github.io';
 const SITE_NOM = 'ConvertirFacile';
 const AUTEUR = 'Kayroxen';
 const EMAIL_CONTACT = 'Karoxen.dev@gmail.com';
