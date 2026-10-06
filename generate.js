@@ -2346,7 +2346,8 @@ function contenuContact(lang) {
 // 13. SITEMAP + ROBOTS + SEARCH INDEX
 // ============================================================
 
-function sitemap() {
+// Génère la liste complète des URLs
+function toutesLesUrls() {
   const urls = [];
   urls.push(`${SITE_URL}/`);
   for (const lang of LANGUES) {
@@ -2365,11 +2366,40 @@ function sitemap() {
       urls.push(`${SITE_URL}/${lang}/${c.categorieSlug}/${c.slug}.html`);
     }
   }
+  return urls;
+}
+
+// Découpe un tableau en morceaux de taille N
+function decouperEnMorceaux(tableau, taille) {
+  const morceaux = [];
+  for (let i = 0; i < tableau.length; i += taille) {
+    morceaux.push(tableau.slice(i, i + taille));
+  }
+  return morceaux;
+}
+
+// Génère un sous-sitemap
+function genererSousSitemap(urls) {
   const entries = urls.map(u => `  <url><loc>${u}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${entries}
 </urlset>`;
+}
+
+// Génère le sitemap index
+function genererSitemapIndex(nbSousSitemaps) {
+  const date = new Date().toISOString().split('T')[0];
+  let entries = '';
+  for (let i = 1; i <= nbSousSitemaps; i++) {
+    entries += `  <sitemap>
+    <loc>${SITE_URL}/sitemap-${i}.xml</loc>
+    <lastmod>${date}</lastmod>
+  </sitemap>\n`;
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${entries}</sitemapindex>`;
 }
 
 function robots() {
@@ -2495,7 +2525,20 @@ for (const lang of LANGUES) {
   fs.writeFileSync(path.join(out, `search-index-${lang}.json`), searchIndex(lang));
 }
 
-fs.writeFileSync(path.join(out, 'sitemap.xml'), sitemap());
+// Sitemaps découpés en morceaux de 5000 URLs
+const TOUTES_URLS = toutesLesUrls();
+const TAILLE_MORCEAU = 5000;
+const MORCEAUX = decouperEnMorceaux(TOUTES_URLS, TAILLE_MORCEAU);
+
+console.log(`📋 Génération de ${MORCEAUX.length} sous-sitemaps (${TOUTES_URLS.length} URLs)…`);
+for (let i = 0; i < MORCEAUX.length; i++) {
+  fs.writeFileSync(
+    path.join(out, `sitemap-${i + 1}.xml`),
+    genererSousSitemap(MORCEAUX[i])
+  );
+}
+
+fs.writeFileSync(path.join(out, 'sitemap.xml'), genererSitemapIndex(MORCEAUX.length));
 fs.writeFileSync(path.join(out, 'robots.txt'), robots());
 
 fs.copyFileSync(path.join('src', 'style.css'), path.join(out, 'style.css'));
